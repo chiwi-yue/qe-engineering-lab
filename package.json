@@ -1,0 +1,29 @@
+{
+  "name": "qe-engineering-lab",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.19.0",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "concurrently -k \"pnpm --filter @qe/api dev\" \"pnpm --filter @qe/web dev\"",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm --filter @qe/api test",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "db:migrate": "pnpm --filter @qe/api db:migrate",
+    "db:seed": "pnpm --filter @qe/api db:seed",
+    "db:seed:more": "pnpm --filter @qe/api db:seed:more"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.0",
+    "eslint": "^9.39.0",
+    "typescript-eslint": "^8.46.0",
+    "prettier": "^3.6.0",
+    "concurrently": "^9.2.0",
+    "typescript": "^5.9.0"
+  }
+}

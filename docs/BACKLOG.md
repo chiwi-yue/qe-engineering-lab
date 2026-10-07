@@ -110,7 +110,7 @@ These 30 items are the plan, not completed issues. Milestone checkboxes and exec
 ## QE-016 — User authentication (M2)
 
 - Goal: Establish trustworthy identity.
-- Acceptance criteria: Register/login; password hashing; malformed/expired tokens denied; no committed credentials.
+- Acceptance criteria: Customer login/logout; registration explicitly deferred from M2; password hashing; malformed/expired tokens denied; no committed credentials.
 - Suggested test level: Unit / API / UI login.
 - QE value: Security prerequisite.
 

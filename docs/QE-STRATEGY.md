@@ -29,4 +29,16 @@ M2 covers approximately 5–10 critical UI scenarios with isolated fixtures, obs
 
 ## Release decisions
 
-Local checks can support a local demonstration recommendation. They cannot support a public-release claim while identity is caller-supplied. Use RELEASE-REPORTS.md to communicate scope, evidence, known defects and deferred risks. Pending checks stay pending.
+Local checks can support a local demonstration recommendation. They cannot support a public-release claim while rate limiting, deployment security and broader security coverage remains incomplete. Use RELEASE-REPORTS.md to communicate scope, evidence, known defects and deferred risks. Pending checks stay pending.
+
+## M2 authentication slice
+
+Business rule: protected booking creation requires a valid customer session, and the recorded owner is that customer. Candidate risk: a caller edits customerId to impersonate another person. Focused service tests verify identity injection and rejection before persistence; four HTTP checks verify that the route actually enforces authentication and Origin checks. Password/session checks include wrong credentials, expiry at the exact boundary, rotation and logout.
+
+These HTTP checks use a database double. A separate temporary real PostgreSQL database verified session digests, ownership, spoof rejection, expiry and revocation; it was removed after verification, leaving manual demo data intact. Browser exploration verified login → booking → reload → logout. See M2-VERIFICATION.md. The auth slice was the prerequisite. The implemented M2 harness and current evidence are described in [M2-IMPLEMENTATION.md](M2-IMPLEMENTATION.md); a broader M4 API suite remains deferred.
+
+## M2 journey coverage
+
+Eight scenarios cover login/reload/logout, wrong credentials, unauthenticated creation, persisted booking visibility, a deterministic stale-page 409, cancellation/rebooking, repeated cancellation and cross-customer denial. UI exercises establish integration behaviour; API/SQL assertions target permission and state rules without repeating every UI action. Capacity contention under simultaneous writes still requires M5.
+
+UUID-scoped fixture identifiers remove test-order and shared-account dependencies; slot selectors identify only the test's appointment. Fixture teardown runs after both passes and failures. Zero retries ensure a failure remains visible. Web-server readiness and locator assertions are observable waits. Reports include browser/network trace and SQL state for investigation. Local diagnostic generation is observed; GitHub upload is configured but unverified. One green local run is not a measured stability rate.

@@ -1,34 +1,35 @@
 import pg from 'pg';
-import { readFile } from 'node:fs/promises';
+import { applyMigrations } from './migrations.js';
+import { hashPassword } from './password.js';
 if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL is required.');
 const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
 const client = await pool.connect();
 try {
   await client.query('BEGIN');
   if (process.argv[2] === 'migrate') {
-    await client.query(
-      'CREATE TABLE IF NOT EXISTS schema_migrations (version text PRIMARY KEY, applied_at timestamptz NOT NULL DEFAULT now())',
-    );
-    await client.query('LOCK TABLE schema_migrations IN EXCLUSIVE MODE');
-    const existing = await client.query(
-      "SELECT 1 FROM schema_migrations WHERE version = '001'",
-    );
-    if (!existing.rowCount) {
-      await client.query(
-        await readFile(
-          new URL('../db/001_initial.sql', import.meta.url),
-          'utf8',
-        ),
-      );
-      await client.query(
-        "INSERT INTO schema_migrations(version) VALUES ('001')",
-      );
-    }
+    await applyMigrations(client);
   } else if (process.argv[2] === 'seed') {
+    const password = process.env.DEMO_CUSTOMER_PASSWORD;
+    if (!password || password.length < 12 || password.length > 128)
+      throw new Error(
+        'Set DEMO_CUSTOMER_PASSWORD in .env to 12-128 characters before seeding.',
+      );
     await client.query(`INSERT INTO users(id,email,role) VALUES
       ('00000000-0000-4000-8000-000000000001','customer-a@example.test','customer'),
       ('00000000-0000-4000-8000-000000000002','customer-b@example.test','customer'),
       ('00000000-0000-4000-8000-000000000003','staff@example.test','staff') ON CONFLICT DO NOTHING`);
+    for (const id of [
+      '00000000-0000-4000-8000-000000000001',
+      '00000000-0000-4000-8000-000000000002',
+    ]) {
+      const hash = await hashPassword(password);
+      await client.query('UPDATE users SET password_hash = $1 WHERE id = $2', [
+        hash,
+        id,
+      ]);
+      // Explicitly reseeding development credentials revokes prior sessions.
+      await client.query('DELETE FROM sessions WHERE user_id = $1', [id]);
+    }
     await client.query(`INSERT INTO appointment_slots(id,starts_at,ends_at)
       SELECT ('10000000-0000-4000-8000-' || lpad(n::text,12,'0'))::uuid,
         date_trunc('day',now() AT TIME ZONE 'Australia/Brisbane') AT TIME ZONE 'Australia/Brisbane' + interval '2 days' + n * interval '1 hour',

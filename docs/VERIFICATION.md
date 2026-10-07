@@ -1,5 +1,7 @@
 # First-slice verification
 
+Historical M1 evidence; the current authentication slice is recorded in [M2-VERIFICATION.md](M2-VERIFICATION.md).
+
 Executed 6 October 2026 (Australia/Brisbane). AI-assisted implementation; the outcomes below were observed during actual execution.
 
 ## Environment and limits
@@ -50,7 +52,7 @@ docker compose exec db psql -U qe -d qe_lab -c 'SELECT id, slot_id, customer_id,
 
 Expected retry: HTTP 409 with `SLOT_UNAVAILABLE`. Query the new environment's booking reference; UUIDs differ across executions. Repeat migration and seed, then confirm counts and the booking reference remain unchanged. Checks above were one-off verification, not an API automation suite.
 
-## Scope still pending
+## Scope pending at the M1 checkpoint
 
 Authentication, ownership, cancellation, idempotent replay, 20-request concurrency evidence, Playwright automation, CI artefacts, notification failure, Sydney DST, performance and defect exercises remain deferred. No benchmark, concurrent-capacity test or completed defect story is claimed. The unique index is implemented but concurrent behaviour still requires M5 evidence.
 

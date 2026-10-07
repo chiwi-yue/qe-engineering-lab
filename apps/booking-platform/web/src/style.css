@@ -27,3 +27,19 @@ button:disabled {
 [role='status'] {
   overflow-wrap: anywhere;
 }
+
+form {
+  display: grid;
+  gap: 1rem;
+  max-width: 350px;
+  margin-bottom: 2rem;
+}
+label {
+  display: grid;
+  gap: 0.4rem;
+}
+input {
+  font: inherit;
+  padding: 0.6rem;
+  min-width: 0;
+}

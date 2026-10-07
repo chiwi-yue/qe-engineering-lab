@@ -17,4 +17,4 @@ No executed release recommendation is claimed yet. Copy the template below for e
 
 GO means the stated scope meets its agreed gates. GO WITH RISK requires explicit residual-risk communication. NO-GO identifies the blocking evidence or unmitigated risk. A local demonstration decision does not authorise production deployment.
 
-For the first slice, public use remains NO-GO because customer identity is caller-supplied. A local demo assessment must still inspect build, tests and real PostgreSQL booking persistence.
+At the M1 checkpoint, public use was NO-GO because customer identity was caller-supplied. M2 now derives creation ownership from a session, but public use remains NO-GO while deployment security, brute-force controls and broader security coverage are pending. A local demo assessment must still inspect build, tests and real PostgreSQL booking persistence.

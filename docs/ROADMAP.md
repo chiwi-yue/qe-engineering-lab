@@ -1,6 +1,6 @@
 # Roadmap
 
-Current milestone: **M1 complete for the local slice; M2 next, deferred**. Scope stops after the first complete booking slice. Later milestones remain deferred. See [backlog](BACKLOG.md) and [execution evidence](VERIFICATION.md).
+Current milestone: **M2 implemented and locally verified — GitHub PR execution/upload pending**. M1 local verification is recorded; fresh-clone Compose startup is pending. Next: review/publish the M2 branch and verify its PR checks. Later milestones remain deferred. See [backlog](BACKLOG.md) and [execution evidence](VERIFICATION.md).
 
 ## M0 — Foundation
 
@@ -32,11 +32,17 @@ Definition of done: Clone, follow README and successfully create a persisted boo
 
 ## M2 — Initial UI Quality Engineering
 
-- [ ] Implement authentication prerequisite and cancellation journey
-- [ ] Configure Playwright with approximately 5–10 high-value scenarios
-- [ ] Reusable fixtures and controlled test data
-- [ ] HTML report, screenshots and traces on failure
-- [ ] CI execution and diagnostic artefact publishing
+[Current implementation and execution evidence](M2-IMPLEMENTATION.md). The earlier [plan review](M2-PLAN-REVIEW.md) records the authentication-only baseline; the PR CI definition of done still awaits remote evidence.
+
+- [x] Customer login/logout with hashed passwords and expiring database sessions
+- [x] Derive booking ownership from the authenticated customer and reject identity spoofing
+- [x] Focused authentication checks plus real PostgreSQL and manual UI evidence
+- [x] View-own-bookings and owner-only cancellation journey
+- [x] Configure Playwright with approximately 5–10 high-value scenarios
+- [x] Reusable fixtures and controlled test data
+- [x] HTML report, screenshots and traces on failure
+- [x] GitHub Actions workflow configured with failure artefact publishing
+- [ ] Actual GitHub PR execution and diagnostic artefact upload verified
 
 Definition of done: Pull requests run useful UI checks and publish diagnostic evidence.
 

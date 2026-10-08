@@ -1,6 +1,8 @@
 node_modules/
 dist/
 .env
+.env.test
+diagnostic-evidence/
 *.log
 coverage/
 playwright-report/

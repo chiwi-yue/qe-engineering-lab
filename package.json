@@ -9,14 +9,17 @@
   "scripts": {
     "dev": "concurrently -k \"pnpm --filter @qe/api dev\" \"pnpm --filter @qe/web dev\"",
     "build": "pnpm -r build",
-    "typecheck": "pnpm -r typecheck",
+    "typecheck": "pnpm -r typecheck && tsc -p tsconfig.tests.json --noEmit",
     "test": "pnpm --filter @qe/api test",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "db:migrate": "pnpm --filter @qe/api db:migrate",
     "db:seed": "pnpm --filter @qe/api db:seed",
-    "db:seed:more": "pnpm --filter @qe/api db:seed:more"
+    "db:seed:more": "pnpm --filter @qe/api db:seed:more",
+    "test:ui": "node --env-file-if-exists=.env.test node_modules/@playwright/test/cli.js test",
+    "test:ui:report": "playwright show-report",
+    "test:db:migrate": "node --env-file-if-exists=.env.test scripts/test-database.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",
@@ -24,6 +27,10 @@
     "typescript-eslint": "^8.46.0",
     "prettier": "^3.6.0",
     "concurrently": "^9.2.0",
-    "typescript": "^5.9.0"
+    "typescript": "^5.9.0",
+    "@playwright/test": "^1.58.0",
+    "pg": "^8.16.0",
+    "@types/pg": "^8.15.0",
+    "@types/node": "^22.18.0"
   }
 }

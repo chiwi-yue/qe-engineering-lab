@@ -26,7 +26,7 @@ This repository demonstrates Senior Quality Engineering capability for Australia
 
 ## Working conventions
 
-Use a single pnpm monorepo, TypeScript, React, Express and PostgreSQL. Keep PostgreSQL invariants in the database. Use local demo users only until authentication is implemented; never describe caller-supplied customer IDs as secure authentication. Do not expose this unauthenticated slice publicly.
+Use a single pnpm monorepo, TypeScript, React, Express and PostgreSQL. Keep PostgreSQL invariants in the database. Customer authentication uses PostgreSQL-backed opaque sessions. Derive booking identity from the session; never trust caller-supplied customer IDs. Local credentials are supplied through the ignored .env, not committed source. Keep this local demo off public hosting until its remaining deployment/security risks are addressed. Read docs/AUTHENTICATION.md before changing identity or session behaviour.
 
 Meaningful work should follow backlog item → branch → implementation → tests → PR → review → merge. Do not make artificial commits, merge automatically, or publish without user instruction. The initial foundation may remain uncommitted for review.
 
